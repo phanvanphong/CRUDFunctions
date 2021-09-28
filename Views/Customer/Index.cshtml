@@ -1,0 +1,38 @@
+﻿@model List<DemoDotNet5.ViewModel.CustomerViewModel>
+
+<div class="container">
+    <h2>List Customer </h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Fullname</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>@obj.Username</td>
+                    <td>@obj.Fullname</td>
+                    <td>@obj.Email</td>
+                    <td>@obj.Address</td>
+                    <td>
+                        <a asp-controller="Customer" asp-route-id="@obj.Id" asp-action="Edit" class="btn btn-success">Edit</a>
+                        <a onclick="return confirm('Are you sure ?')" asp-controller="Customer" asp-route-id="@obj.Id" asp-action="Delete" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <div>
+        <a class="btn btn-primary" asp-controller="Customer" asp-action="Create">
+            Insert
+        </a>
+    </div>
+</div>
+
