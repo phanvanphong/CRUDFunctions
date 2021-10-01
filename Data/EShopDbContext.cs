@@ -13,12 +13,13 @@ namespace DemoDotNet5.Data
     {
         public EShopDbContext(DbContextOptions<EShopDbContext> options) : base(options)
         {
-
+            
         }
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

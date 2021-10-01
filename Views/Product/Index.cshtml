@@ -4,7 +4,23 @@
 
 <div class="container p-3">
     <div class="row pt-4">
-        <h2 class="text-dark">Product List</h2>
+        <div class="col-8">
+            <h2 class="text-dark">Product List</h2>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <form asp-action="Index" method="get">
+                    <div class="input-group">
+                        <input type="text" name="SearchString" class="form-control" placeholder="Search Product Name">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="submit">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <br /><br />
@@ -20,12 +36,14 @@
             </tr>
         </thead>
         <tbody>
+        @if (Model.Count > 0)
+        {
             @foreach (var obj in Model)
             {
                 <tr>
                     <td>@obj.Name</td>
                     <td>
-                        <img src="~/images/@obj.NameImage" alt="" width="100" height="100" asp-append-version="true" />
+                        <img src="~/images/@obj.ImageName" alt="" width="100" height="100" asp-append-version="true" />
                     </td>
                     <td>@obj.Price</td>
                     <td>@obj.CategoryName</td>
@@ -34,6 +52,12 @@
                         <a onclick="return confirm('Arey you sure ?')" asp-controller="Product" asp-route-Id="@obj.Id" asp-action="Delete" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
+            }
+
+            }
+            else
+            {
+                <p>No Product exist </p>
             }
         </tbody>
     </table>

@@ -16,18 +16,6 @@ namespace DemoDotNet5.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
-                services.AddDbContext<DemoDotNet5Context>(options =>
-                    options.UseSqlServer(
-                        context.Configuration.GetConnectionString("DemoDotNet5ContextConnection")));
-
-                services.AddDefaultIdentity<ApplicationUser>(options =>
-                {
-
-                    options.SignIn.RequireConfirmedAccount = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireUppercase = false;
-                })
-                    .AddEntityFrameworkStores<DemoDotNet5Context>();
             });
         }
     }

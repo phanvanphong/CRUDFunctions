@@ -11,8 +11,9 @@ namespace DemoDotNet5.ViewModel
         public int Id { get; set; }
         public string Name { get; set; }
         public string Price { get; set; }
-        public string NameImage { get; set; }
-        public IFormFile Image { get; set; }
+        public string ImageName { get; set; }
+        public IFormFile FileUpload { get; set; }
+        public IFormFile FileEdit { get; set; }
         public string CategoryName { get; set; }
         public int CategoryId { get; set; }
 

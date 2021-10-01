@@ -20,5 +20,7 @@ namespace DemoDotNet5.Models
         public string Address { get; set; }
         [Required]
         public string Email { get; set; }
+        public string CreatedAt { get; set; }
+        public string UserAdd { get; set; }
     }
 }

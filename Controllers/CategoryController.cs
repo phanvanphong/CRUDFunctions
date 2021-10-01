@@ -1,6 +1,7 @@
 ﻿using DemoDotNet5.Data;
 using DemoDotNet5.Models;
 using DemoDotNet5.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace DemoDotNet5.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly EShopDbContext _db;
@@ -16,8 +18,9 @@ namespace DemoDotNet5.Controllers
         public CategoryController(EShopDbContext db)
         {
             _db = db;
+
         }
-        public IActionResult Index()
+        public IActionResult Index(string SearchString)
         {
             var data = from c in _db.Categories
                        select new CategoryViewModel
@@ -26,7 +29,12 @@ namespace DemoDotNet5.Controllers
                            Name = c.Name,
                            Desc = c.Desc,
                        };
-
+            // Nếu chuỗi SearchString có giá trị thỳ lấy những phần tử có name chứa chuỗi Searchstring
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+              return View(data.Where(a => a.Name.Contains(SearchString)).ToList());
+            }
+            // Không thỳ trả về data.ToList();
             return View(data.ToList());
         }
 
@@ -54,18 +62,24 @@ namespace DemoDotNet5.Controllers
             return View();
         }
 
-        public IActionResult Edit(int id)
+        public IActionResult Edit(CategoryViewModel obj, int id)
         {
-            var obj = _db.Categories.Find(id);
+
+            var data = _db.Categories.Find(id);
+            obj.Name = data.Name;
+            obj.Desc = data.Desc;
             return View(obj);
         }
 
         [HttpPost]
-        public IActionResult EditPost(Category obj)
+        public IActionResult EditPost(CategoryViewModel obj, int id)
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj);
+                var data = _db.Categories.Find(id);
+                data.Name = obj.Name;
+                data.Desc = obj.Desc;
+                _db.Categories.Update(data);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
 
@@ -84,5 +98,25 @@ namespace DemoDotNet5.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        //public IActionResult SearchString(string SearchString)
+        //{
+        //    var data = from c in _db.Categories
+        //               select new CategoryViewModel
+        //               {
+        //                   Id = c.Id,
+        //                   Name = c.Name,
+        //                   Desc = c.Desc,
+        //               };
+        //    if (!string.IsNullOrEmpty(SearchString))
+        //    {
+        //        data.Where(a => a.Name.Contains(SearchString)).ToList();
+        //    }
+        //    else
+        //    {
+        //        data.ToList();
+        //    }
+        //    return RedirectToAction("Index");
+        //}
     }
 }

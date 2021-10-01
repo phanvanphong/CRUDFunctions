@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\.NET5\\DemoDotNet5\\DemoDotNet5\\DemoDotNet5.csproj": {}
+    "D:\\.NET5\\DemoDotNet5 - Copy\\DemoDotNet5\\DemoDotNet5.csproj": {}
   },
   "projects": {
-    "D:\\.NET5\\DemoDotNet5\\DemoDotNet5\\DemoDotNet5.csproj": {
+    "D:\\.NET5\\DemoDotNet5 - Copy\\DemoDotNet5\\DemoDotNet5.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\.NET5\\DemoDotNet5\\DemoDotNet5\\DemoDotNet5.csproj",
+        "projectUniqueName": "D:\\.NET5\\DemoDotNet5 - Copy\\DemoDotNet5\\DemoDotNet5.csproj",
         "projectName": "DemoDotNet5",
-        "projectPath": "D:\\.NET5\\DemoDotNet5\\DemoDotNet5\\DemoDotNet5.csproj",
+        "projectPath": "D:\\.NET5\\DemoDotNet5 - Copy\\DemoDotNet5\\DemoDotNet5.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\.NET5\\DemoDotNet5\\DemoDotNet5\\obj\\",
+        "outputPath": "D:\\.NET5\\DemoDotNet5 - Copy\\DemoDotNet5\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -64,13 +64,13 @@
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[5.0.10, )"
+              "version": "[5.0.9, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[5.0.10, )"
+              "version": "[5.0.9, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",

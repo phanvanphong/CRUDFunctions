@@ -1,7 +1,27 @@
 ﻿@model List<DemoDotNet5.ViewModel.CustomerViewModel>
 
-<div class="container">
-    <h2>List Customer </h2>
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-8">
+            <h2 class="text-dark">Customer List</h2>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <form asp-action="Index" method="get">
+                    <div class="input-group">
+                        <input type="text" name="SearchString" class="form-control" placeholder="Search Username">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="submit">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <br /><br />
     <table class="table">
         <thead>
             <tr>
@@ -9,26 +29,37 @@
                 <th>Fullname</th>
                 <th>Email</th>
                 <th>Address</th>
+                <th>User add</th>
+                <th>Created at</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var obj in Model)
+            @if (Model.Count > 0)
             {
-                <tr>
-                    <td>@obj.Username</td>
-                    <td>@obj.Fullname</td>
-                    <td>@obj.Email</td>
-                    <td>@obj.Address</td>
-                    <td>
-                        <a asp-controller="Customer" asp-route-id="@obj.Id" asp-action="Edit" class="btn btn-success">Edit</a>
-                        <a onclick="return confirm('Are you sure ?')" asp-controller="Customer" asp-route-id="@obj.Id" asp-action="Delete" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>@obj.Username</td>
+                        <td>@obj.Fullname</td>
+                        <td>@obj.Email</td>
+                        <td>@obj.Address</td>
+                        <td>@obj.UserAdd</td>
+                        <td>@obj.CreatedAt</td>
+                        <td>
+                            <a asp-controller="Customer" asp-route-id="@obj.Id" asp-action="Edit" class="btn btn-success">Edit</a>
+                            <a onclick="return confirm('Are you sure ?')" asp-controller="Customer" asp-route-id="@obj.Id" asp-action="Delete" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
             }
-
+            else
+            {
+                <p>No Customer exists. </p>
+            }
         </tbody>
     </table>
+
     <div>
         <a class="btn btn-primary" asp-controller="Customer" asp-action="Create">
             Insert

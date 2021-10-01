@@ -5,11 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Contents\**" />
+    <Content Remove="Contents\**" />
+    <EmbeddedResource Remove="Contents\**" />
+    <None Remove="Contents\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Areas\Identity\Data\DemoDotNet5Context.cs" />
-    <Compile Remove="Areas\Identity\IdentityHostingStartup.cs" />
-    <Compile Remove="Migrations\20210927031549_addIdentityUser.cs" />
-    <Compile Remove="Migrations\20210927031549_addIdentityUser.Designer.cs" />
-    <Compile Remove="Migrations\DemoDotNet5ContextModelSnapshot.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Areas\Identity\Pages\_Layout.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,8 +27,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.10">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -29,8 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contents\Images\" />
-    <Folder Include="Migrations\EShopDb\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

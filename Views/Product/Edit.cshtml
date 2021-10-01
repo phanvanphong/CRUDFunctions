@@ -1,11 +1,11 @@
 ﻿
-@model DemoDotNet5.Models.Product
+@model DemoDotNet5.ViewModel.ProductViewModel
 @{
     var cats = ViewBag.cats;
 }
 <div class="container">
     <h2>Edit Product</h2>
-    <form method="post">
+    <form method="post" asp-action="EditPost" enctype="multipart/form-data">
         <input asp-for="Id" hidden />
         <div class="form-group">
             <label for="email">Name:</label>
@@ -19,10 +19,11 @@
         </div>
         <div class="form-group">
             <label for="pwd">Image:</label>
-            <input type="file" asp-for="Image" class="form-control">
-            <span asp-validation-for="Image" class="text-danger"></span><br />
-            <img src="~/images/@Model.Image" width="100" height="100" alt="" />
-
+            <input type="file" asp-for="FileUpload" class="form-control" hidden>
+            <input type="file" asp-for="FileEdit"class="form-control" />
+            <img src="~/images/@Model.ImageName" width="100" height="100" alt="" /><br />
+            <span>@Model.ImageName</span><br />
+            <span asp-validation-for="FileUpload" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label for="sel1">Category ?:</label>

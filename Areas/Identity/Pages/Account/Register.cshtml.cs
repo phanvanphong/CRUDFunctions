@@ -14,9 +14,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using DemoDotNet5.Models;
+using DemoDotNet5.Data;
 
 namespace DemoDotNet5.Areas.Identity.Pages.Account
 {
+
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
@@ -24,17 +27,21 @@ namespace DemoDotNet5.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly EShopDbContext _db;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            EShopDbContext db
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _db = db;
         }
 
         [BindProperty]
@@ -46,6 +53,18 @@ namespace DemoDotNet5.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Required]
+            [Display(Name = "FirstName")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "LastName")]
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "PhoneNumber")]
+            public string PhoneNumber { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -75,7 +94,12 @@ namespace DemoDotNet5.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                // Lưu thông tin của UserProfile
+                var userProfile = new UserProfile(Input.FirstName, Input.LastName, Input.PhoneNumber);
+               _db.UserProfiles.Add(userProfile);
+               _db.SaveChanges();
+                // Lấy Id của userProfile truyền vào hàm tạo của ApplicationUser 
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, UserProfileId = userProfile.Id };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
