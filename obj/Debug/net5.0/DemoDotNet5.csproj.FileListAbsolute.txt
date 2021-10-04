@@ -344,4 +344,8 @@ D:\.NET5\DemoDotNet5 - Copy\DemoDotNet5\obj\Debug\net5.0\ref\DemoDotNet5.dll
 D:\.NET5\DemoDotNet5 - Copy\DemoDotNet5\obj\Debug\net5.0\DemoDotNet5.pdb
 D:\.NET5\DemoDotNet5 - Copy\DemoDotNet5\obj\Debug\net5.0\DemoDotNet5.genruntimeconfig.cache
 D:\.NET5\DemoDotNet5 - Copy\DemoDotNet5\obj\Debug\net5.0\Razor\Views\Product\Index.cshtml.g.cs
-D:\.NET5\DemoDotNet5 - Copy\DemoDotNet5\obj\Debug\net5.0\DemoDotNet5.csproj.AssemblyReference.cache
+D:\.NET5\DemoDotNet5 - Copy\DemoDotNet5\bin\Debug\net5.0\AutoMapper.dll
+D:\.NET5\DemoDotNet5 - Copy\DemoDotNet5\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\.NET5\DemoDotNet5 - Copy\DemoDotNet5\obj\Debug\net5.0\Razor\Areas\Identity\Pages\Role\Index.cshtml.g.cs
+D:\.NET5\DemoDotNet5 - Copy\DemoDotNet5\obj\Debug\net5.0\Razor\Areas\Identity\Pages\Role\Create.cshtml.g.cs
+D:\.NET5\DemoDotNet5 - Copy\DemoDotNet5\obj\Debug\net5.0\Razor\Areas\Identity\Pages\Role\RolePage.cshtml.g.cs

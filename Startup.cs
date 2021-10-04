@@ -32,7 +32,6 @@ namespace DemoDotNet5
             );
             services.AddDefaultIdentity<ApplicationUser>(options =>
             {
-
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
@@ -42,6 +41,8 @@ namespace DemoDotNet5
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            services.AddAutoMapper(typeof(Startup));
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -35,6 +35,7 @@
         </div>
 
         <input type="hidden" name="UserAdd" value="@UserManager.GetUserName(User)" />
+        <input type="hidden" name="CreatedAt" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
 
         <button type="submit" class="btn btn-primary">Insert</button>
         <a class="btn btn-secondary" asp-controller="Customer" asp-action="Index">Back</a>

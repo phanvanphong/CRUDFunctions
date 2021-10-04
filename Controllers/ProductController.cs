@@ -1,4 +1,5 @@
-﻿using DemoDotNet5.Data;
+﻿using AutoMapper;
+using DemoDotNet5.Data;
 using DemoDotNet5.Models;
 using DemoDotNet5.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -19,17 +20,18 @@ namespace DemoDotNet5.Controllers
     {
         private readonly EShopDbContext _db;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IMapper _mapper;
 
-        public ProductController(EShopDbContext db,IWebHostEnvironment hostEnvironment)
+        public ProductController(EShopDbContext db,IWebHostEnvironment hostEnvironment, IMapper mapper)
         {
             _db = db;
-            this._hostEnvironment = hostEnvironment;
+            _hostEnvironment = hostEnvironment;
+            _mapper = mapper;
         }
-
 
         public IActionResult Index(string SearchString)
         {
-            var data = from p in _db.Products
+            var list_product = from p in _db.Products
                        join c in _db.Categories on p.CategoryId equals c.Id
                        select new ProductViewModel
                        {
@@ -39,16 +41,21 @@ namespace DemoDotNet5.Controllers
                            Price = p.Price,
                            CategoryName = c.Name
                        };
+            var productViewModel = _mapper.Map<List<ProductViewModel>>(list_product);
             if (!string.IsNullOrEmpty(SearchString))
             {
-                return View(data.Where(a => a.Name.Contains(SearchString)).ToList());
+                var searchProduct = list_product.Where(a => a.Name.Contains(SearchString));
+                var searchProductViewModel = _mapper.Map<List<ProductViewModel>>(searchProduct);
+                return View(searchProductViewModel);
             }
-            return View(data.ToList());
+            return View(productViewModel);
         }
 
 
         public IActionResult Create() {
-            ViewBag.cats = _db.Categories.ToList();
+            var tbl_category = _db.Categories;
+            var categoryViewModel = _mapper.Map<List<CategoryViewModel>>(tbl_category);
+            ViewBag.cats = categoryViewModel;
             return View();
         }
 
@@ -70,6 +77,7 @@ namespace DemoDotNet5.Controllers
                     using var fileStream = new FileStream(filePath, FileMode.Create);
                     obj.FileUpload.CopyTo(fileStream);
                 }
+
                 var Product = new Product
                 {
                     Name = obj.Name,
@@ -87,7 +95,10 @@ namespace DemoDotNet5.Controllers
 
         public IActionResult Edit(ProductViewModel obj, int id)
         {
-            ViewBag.cats = _db.Categories.ToList();
+            var tbl_category = _db.Categories;
+            var categoryViewModel = _mapper.Map<List<CategoryViewModel>>(tbl_category);
+            ViewBag.cats = categoryViewModel;
+
             if (ModelState.IsValid)
             {
                 var data = _db.Products.Find(id);

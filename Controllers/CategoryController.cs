@@ -1,4 +1,5 @@
-﻿using DemoDotNet5.Data;
+﻿using AutoMapper;
+using DemoDotNet5.Data;
 using DemoDotNet5.Models;
 using DemoDotNet5.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -14,28 +15,45 @@ namespace DemoDotNet5.Controllers
     public class CategoryController : Controller
     {
         private readonly EShopDbContext _db;
+        private readonly IMapper _mapper;
 
-        public CategoryController(EShopDbContext db)
+        public CategoryController(EShopDbContext db,IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
 
         }
+        ////public IActionResult Index(string SearchString)
+        ////{
+
+        ////    var data = from c in _db.Categories
+        ////               select new CategoryViewModel
+        ////               {
+        ////                   Id = c.Id,
+        ////                   Name = c.Name,
+        ////                   Desc = c.Desc,
+        ////               };
+        ////    // Nếu chuỗi SearchString có giá trị thỳ lấy những phần tử có name chứa chuỗi Searchstring
+        ////    if (!string.IsNullOrEmpty(SearchString))
+        ////    {
+        ////        return View(data.Where(a => a.Name.Contains(SearchString)).ToList());
+        ////    }
+        ////    // Không thỳ trả về data.ToList();
+        ////    return View(data.ToList());
+        ////}
+
         public IActionResult Index(string SearchString)
         {
-            var data = from c in _db.Categories
-                       select new CategoryViewModel
-                       {
-                           Id = c.Id,
-                           Name = c.Name,
-                           Desc = c.Desc,
-                       };
-            // Nếu chuỗi SearchString có giá trị thỳ lấy những phần tử có name chứa chuỗi Searchstring
+            var tbl_category = _db.Categories;
+            var categoryViewModel = _mapper.Map<List<CategoryViewModel>>(tbl_category);
             if (!string.IsNullOrEmpty(SearchString))
             {
-              return View(data.Where(a => a.Name.Contains(SearchString)).ToList());
-            }
-            // Không thỳ trả về data.ToList();
-            return View(data.ToList());
+                var searchCategory = tbl_category.Where(a => a.Name.Contains(SearchString));
+                var searchCategoryViewModel = _mapper.Map<List<CategoryViewModel>>(searchCategory);
+                return View(searchCategoryViewModel);
+            };
+            return View(categoryViewModel);
+
         }
 
         public IActionResult Create()
@@ -49,74 +67,41 @@ namespace DemoDotNet5.Controllers
         {
             if (ModelState.IsValid)
             {
-                var Category = new Category
-                {
-                    Name = obj.Name,
-                    Desc = obj.Desc
-
-                };
-                _db.Categories.Add(Category);
+                var category = _mapper.Map<Category>(obj);
+                _db.Categories.Add(category);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View();
         }
 
-        public IActionResult Edit(CategoryViewModel obj, int id)
+        public IActionResult Edit(int id)
         {
-
-            var data = _db.Categories.Find(id);
-            obj.Name = data.Name;
-            obj.Desc = data.Desc;
-            return View(obj);
+            var category_data = _db.Categories.Find(id);
+            var categoryViewModel = _mapper.Map<CategoryViewModel>(category_data);
+            return View(categoryViewModel);
         }
 
         [HttpPost]
-        public IActionResult EditPost(CategoryViewModel obj, int id)
+        public IActionResult EditPost(CategoryViewModel obj)
         {
             if (ModelState.IsValid)
             {
-                var data = _db.Categories.Find(id);
-                data.Name = obj.Name;
-                data.Desc = obj.Desc;
-                _db.Categories.Update(data);
+                var category = _mapper.Map<Category>(obj);
+                _db.Categories.Update(category);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
-
             }
             return View();
         }
 
         public IActionResult Delete(int id)
         {
-            var obj = _db.Categories.Find(id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            _db.Categories.Remove(obj);
+            var category_data = _db.Categories.Find(id);
+            var category = _mapper.Map<Category>(category_data);
+            _db.Categories.Remove(category);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        //public IActionResult SearchString(string SearchString)
-        //{
-        //    var data = from c in _db.Categories
-        //               select new CategoryViewModel
-        //               {
-        //                   Id = c.Id,
-        //                   Name = c.Name,
-        //                   Desc = c.Desc,
-        //               };
-        //    if (!string.IsNullOrEmpty(SearchString))
-        //    {
-        //        data.Where(a => a.Name.Contains(SearchString)).ToList();
-        //    }
-        //    else
-        //    {
-        //        data.ToList();
-        //    }
-        //    return RedirectToAction("Index");
-        //}
     }
 }

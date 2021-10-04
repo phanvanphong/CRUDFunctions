@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DemoDotNet5.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
 
 namespace DemoDotNet5.Controllers
 {
@@ -17,30 +18,45 @@ namespace DemoDotNet5.Controllers
     {
 
         private readonly EShopDbContext _db;
-        public CustomerController(EShopDbContext db)
+        private readonly IMapper _mapper;
+        public CustomerController(EShopDbContext db,IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
+        //public IActionResult Index(string SearchString)
+        //{
+
+        //    var data = from c in _db.Customers
+        //               select new Customer
+        //               {
+        //                   Id = c.Id,
+        //                   Username = c.Username,
+        //                   Password = c.Password,
+        //                   Fullname = c.Fullname,
+        //                   Address = c.Address,
+        //                   UserAdd = c.UserAdd,
+        //                   CreatedAt = c.CreatedAt
+        //               };
+        //    // Nếu chuỗi SearchString có giá trị thỳ lấy những phần tử có name chứa chuỗi Searchstring
+        //    if (!string.IsNullOrEmpty(SearchString))
+        //    {
+        //        return View(data.Where(a => a.Username.Contains(SearchString)).ToList());
+        //    }
+        //    // Không thỳ trả về data.ToList();
+        //    return View(data.ToList());
+        //}
         public IActionResult Index(string SearchString)
         {
-            var data = from c in _db.Customers
-                       select new CustomerViewModel
-                       {
-                           Id = c.Id,
-                           Username = c.Username,
-                           Password = c.Password,
-                           Fullname = c.Fullname,
-                           Email = c.Email,
-                           Address = c.Address,
-                           CreatedAt = c.CreatedAt,
-                           UserAdd = c.UserAdd
-                           
-                       };
+            var tbl_customer = _db.Customers;
+            var customerViewModel = _mapper.Map<List<CustomerViewModel>>(tbl_customer);
             if (!string.IsNullOrEmpty(SearchString))
             {
-                return View(data.Where(a => a.Username.Contains(SearchString)).ToList());
-            }
-            return View(data.ToList());
+                var searchCustomer = tbl_customer.Where(a => a.Username.Contains(SearchString));
+                var searchCustomerViewModel = _mapper.Map<List<CustomerViewModel>>(searchCustomer);
+                return View(searchCustomerViewModel);
+            };
+            return View(customerViewModel);
         }
 
         public IActionResult Create()
@@ -54,19 +70,8 @@ namespace DemoDotNet5.Controllers
         {
             if (ModelState.IsValid)
             {
-               
-                var Customer = new Customer
-                {
-                    Fullname = obj.Fullname,
-                    Username = obj.Username,
-                    Password = obj.Password,
-                    Email = obj.Email,
-                    Address = obj.Address,
-                    CreatedAt = DateTime.Now.ToString("dd/MM/yyyy"),
-                    UserAdd = obj.UserAdd
-
-                };
-                _db.Customers.Add(Customer);
+                var customer = _mapper.Map<Customer>(obj);
+                _db.Customers.Add(customer);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -74,33 +79,20 @@ namespace DemoDotNet5.Controllers
            
         }
 
-        public IActionResult Edit(CustomerViewModel obj, int id)
+        public IActionResult Edit(int id)
         {
-            var data = _db.Customers.Find(id);
-            obj.Username = data.Username;
-            obj.Password = data.Password;
-            obj.Fullname = data.Fullname;
-            obj.Email = data.Email;
-            obj.Address = data.Address;
-            obj.CreatedAt = data.CreatedAt;
-            obj.UserAdd = data.UserAdd;
-            return View(obj);
+            var tbl_customer = _db.Customers.Find(id);
+            var customerViewModel = _mapper.Map<CustomerViewModel>(tbl_customer);
+            return View(customerViewModel);
         }
 
         [HttpPost]
-        public IActionResult EditPost(CustomerViewModel obj,int id)
+        public IActionResult EditPost(CustomerViewModel obj)
         {
             if (ModelState.IsValid)
             {
-                var data = _db.Customers.Find(id);
-                 data.Username = obj.Username;
-                 data.Password = obj.Password;
-                 data.Fullname = obj.Fullname;
-                 data.Email = obj.Email;
-                 data.Address = obj.Address;
-                 data.UserAdd = obj.UserAdd;
-                 data.CreatedAt = obj.CreatedAt;
-                _db.Customers.Update(data);
+                var customer = _mapper.Map<Customer>(obj);
+                _db.Customers.Update(customer);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -110,12 +102,9 @@ namespace DemoDotNet5.Controllers
 
         public IActionResult Delete(int id)
         {
-            var obj = _db.Customers.Find(id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            _db.Customers.Remove(obj);
+            var tbl_customer = _db.Customers.Find(id);
+            var customer = _mapper.Map<Customer>(tbl_customer);
+            _db.Customers.Remove(customer);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
