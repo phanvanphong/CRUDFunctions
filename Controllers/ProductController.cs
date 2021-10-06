@@ -15,7 +15,7 @@ using System.Web;
 
 namespace DemoDotNet5.Controllers
 {
-   [Authorize]
+   [Authorize(Policy ="Product")]
     public class ProductController : Controller
     {
         private readonly EShopDbContext _db;
@@ -29,9 +29,9 @@ namespace DemoDotNet5.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index(string SearchString)
+        public IActionResult Index(string search)
         {
-            var list_product = from p in _db.Products
+            var products = from p in _db.Products
                        join c in _db.Categories on p.CategoryId equals c.Id
                        select new ProductViewModel
                        {
@@ -41,20 +41,18 @@ namespace DemoDotNet5.Controllers
                            Price = p.Price,
                            CategoryName = c.Name
                        };
-            var productViewModel = _mapper.Map<List<ProductViewModel>>(list_product);
-            if (!string.IsNullOrEmpty(SearchString))
+            if (!string.IsNullOrEmpty(search))
             {
-                var searchProduct = list_product.Where(a => a.Name.Contains(SearchString));
-                var searchProductViewModel = _mapper.Map<List<ProductViewModel>>(searchProduct);
-                return View(searchProductViewModel);
+                var searchProducts = products.Where(a => a.Name.Contains(search));
+                return View(searchProducts.ToList());
             }
-            return View(productViewModel);
+            return View(products.ToList());
         }
 
 
         public IActionResult Create() {
-            var tbl_category = _db.Categories;
-            var categoryViewModel = _mapper.Map<List<CategoryViewModel>>(tbl_category);
+            var categories = _db.Categories;
+            var categoryViewModel = _mapper.Map<List<CategoryViewModel>>(categories);
             ViewBag.cats = categoryViewModel;
             return View();
         }
@@ -93,28 +91,25 @@ namespace DemoDotNet5.Controllers
         }
 
 
-        public IActionResult Edit(ProductViewModel obj, int id)
+        public IActionResult Edit(int id)
         {
-            var tbl_category = _db.Categories;
-            var categoryViewModel = _mapper.Map<List<CategoryViewModel>>(tbl_category);
+            var categories = _db.Categories;
+            var categoryViewModel = _mapper.Map<List<CategoryViewModel>>(categories);
             ViewBag.cats = categoryViewModel;
 
-            if (ModelState.IsValid)
-            {
-                var data = _db.Products.Find(id);
-                obj.Name = data.Name;
-                obj.Price = data.Price;
-                obj.ImageName = data.Image;
-                obj.CategoryId = data.CategoryId;
-            }
-            return View(obj);
+            var product = _db.Products.Find(id);
+            var productViewModel = _mapper.Map<ProductViewModel>(product);
+            return View(productViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditPost(ProductViewModel obj, int id)
         {
-            ViewBag.cats = _db.Categories.ToList();
+            var categories = _db.Categories;
+            var categoryViewModel = _mapper.Map<List<CategoryViewModel>>(categories);
+            ViewBag.categories = categoryViewModel;
+
             var data = _db.Products.Find(id);
             if (ModelState.IsValid)
             {
@@ -148,12 +143,9 @@ namespace DemoDotNet5.Controllers
 
         public IActionResult Delete(int id)
         {
-            var obj = _db.Products.Find(id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            _db.Products.Remove(obj);
+            var product = _db.Products.Find(id);
+            var productViewModel = _mapper.Map<Product>(product);
+            _db.Products.Remove(productViewModel);
             _db.SaveChanges();
             return RedirectToAction("Index");
 

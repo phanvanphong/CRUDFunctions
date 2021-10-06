@@ -1,7 +1,7 @@
 ﻿
 @model DemoDotNet5.ViewModel.ProductViewModel
 @{
-    var cate = ViewBag.cats;
+    var categories = ViewBag.cats;
 }
 <div class="container">
     <h2>Insert Product</h2>
@@ -25,7 +25,7 @@
         <div class="form-group">
             <label for="sel1">Category ?:</label>
             <select class="form-control" id="sel1" asp-for="CategoryId">
-                @foreach (var obj in cate)
+                @foreach (var obj in categories)
                 {
                     <option value="@obj.Id">@obj.Name</option>
                 }

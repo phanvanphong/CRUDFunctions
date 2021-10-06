@@ -1,8 +1,9 @@
-using DemoDotNet5.Areas.Identity.Data;
+﻿using DemoDotNet5.Areas.Identity.Data;
 using DemoDotNet5.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,13 +37,53 @@ namespace DemoDotNet5
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<EShopDbContext>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            // Setting Auto Mapper
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
+
+            // Setting Policy
+            services.AddAuthorization(options =>
+            {
+                // Thêm Policy có quyền Admin
+                options.AddPolicy("Admin", policyBuilder =>
+                {
+                    // Phải đăng nhập
+                    policyBuilder.RequireAuthenticatedUser();
+                    // Có vai trò là Manage
+                    policyBuilder.RequireRole("Admin");
+                    // Notes : Claim tức là những tính chất của Role
+
+                });
+
+                // Thêm policy có quyền Manage
+                options.AddPolicy("Manage", policyBuilder =>
+                {
+                    policyBuilder.RequireAuthenticatedUser();
+                    policyBuilder.RequireRole("Admin" , "||" ,"Manage");
+                });
+
+                // Thêm policy có quyền đăng sản phẩm
+
+                options.AddPolicy("Product", policyBuilder =>
+                {
+                    policyBuilder.RequireAuthenticatedUser();
+                    policyBuilder.RequireRole("Admin", "||", "Product", "||" , "Manage");
+                });
+
+
+                // Kiểm tra User có quyền Admin hay không để show AdminMenu
+                options.AddPolicy("ShowAdminMenu", policyBuilder =>
+                {
+                    policyBuilder.RequireRole("Admin");
+                });
+            });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -12,11 +12,14 @@ namespace DemoDotNet5.Mappings
     {
         public AutoMapperProfile()
         {
-            CreateMap<Category,CategoryViewModel >();
-            CreateMap<CategoryViewModel,Category >();
-            CreateMap<Customer, CustomerViewModel>();
-            CreateMap<CustomerViewModel, Customer>();
-            CreateMap<Product, ProductViewModel>();
+            CreateMap<Category,CategoryViewModel >().ReverseMap();
+            CreateMap<Customer, CustomerViewModel>().ReverseMap();
+            CreateMap<Product, ProductViewModel>()
+            .ForMember(dest => 
+                dest.ImageName,
+                opt =>opt.MapFrom(src => src.Image)
+            ).ReverseMap()
+            ;
         }
     }
 }

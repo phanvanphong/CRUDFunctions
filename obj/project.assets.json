@@ -7539,11 +7539,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\.NET5\\DemoDotNet5 - Copy\\DemoDotNet5\\DemoDotNet5.csproj",
+      "projectUniqueName": "D:\\ASP.NETCORE5\\DemoDotNet5\\DemoDotNet5\\DemoDotNet5.csproj",
       "projectName": "DemoDotNet5",
-      "projectPath": "D:\\.NET5\\DemoDotNet5 - Copy\\DemoDotNet5\\DemoDotNet5.csproj",
+      "projectPath": "D:\\ASP.NETCORE5\\DemoDotNet5\\DemoDotNet5\\DemoDotNet5.csproj",
       "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-      "outputPath": "D:\\.NET5\\DemoDotNet5 - Copy\\DemoDotNet5\\obj\\",
+      "outputPath": "D:\\ASP.NETCORE5\\DemoDotNet5\\DemoDotNet5\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

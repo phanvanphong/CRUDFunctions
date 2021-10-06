@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "Role/"
 
 @model DemoDotNet5.Areas.Identity.Pages.Role.IndexModel
 
@@ -34,20 +34,25 @@
               <tbody>
                   @foreach (var role in Model.roles)
                   {
-                  <td>@role.Name</td>
-                  <td>
-                      <a asp-page="./Edit" asp-route-roleId="@role.Id" class="btn btn-success">Edit</a>
-                      <a onclick="return confirm('Are you sure ?')" asp-page="./Delete" asp-route-roleId="@role.Id" class="btn btn-danger">Delete</a>
-                  </td>
-                     }
+                      <tr>
+                          <td>@role.Name</td>
+                          <td>
+                              <a asp-page="./Edit" asp-route-roleId="@role.Id" class="btn btn-success">Edit</a>
+                              <a onclick="return confirm('Are you sure ?')" asp-page="./Delete" asp-route-roleId="@role.Id" class="btn btn-danger">Delete</a>
+                          </td>
+                      </tr>
+                          }
                   </tbody>
               </table>
 
 
-    <div>
-        <a class="btn btn-primary" asp-page="./Create">
-            Insert
-        </a>
-    </div>
+          <div>
+              <a class="btn btn-primary" asp-page="./Create">
+                  Insert
+              </a>
+              <a class="btn btn-primary" asp-page="../User/Index">
+                  Manage Member
+              </a>
+          </div>
 </div>
 

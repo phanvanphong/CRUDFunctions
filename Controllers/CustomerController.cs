@@ -13,7 +13,7 @@ using AutoMapper;
 
 namespace DemoDotNet5.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "Manage")]
     public class CustomerController : Controller
     {
 
@@ -24,40 +24,18 @@ namespace DemoDotNet5.Controllers
             _db = db;
             _mapper = mapper;
         }
-        //public IActionResult Index(string SearchString)
-        //{
 
-        //    var data = from c in _db.Customers
-        //               select new Customer
-        //               {
-        //                   Id = c.Id,
-        //                   Username = c.Username,
-        //                   Password = c.Password,
-        //                   Fullname = c.Fullname,
-        //                   Address = c.Address,
-        //                   UserAdd = c.UserAdd,
-        //                   CreatedAt = c.CreatedAt
-        //               };
-        //    // Nếu chuỗi SearchString có giá trị thỳ lấy những phần tử có name chứa chuỗi Searchstring
-        //    if (!string.IsNullOrEmpty(SearchString))
-        //    {
-        //        return View(data.Where(a => a.Username.Contains(SearchString)).ToList());
-        //    }
-        //    // Không thỳ trả về data.ToList();
-        //    return View(data.ToList());
-        //}
-        public IActionResult Index(string SearchString)
+        public IActionResult Index(string search)
         {
-            var tbl_customer = _db.Customers;
-            var customerViewModel = _mapper.Map<List<CustomerViewModel>>(tbl_customer);
-            if (!string.IsNullOrEmpty(SearchString))
+            Object customers = _db.Customers;
+            if (!string.IsNullOrEmpty(search))
             {
-                var searchCustomer = tbl_customer.Where(a => a.Username.Contains(SearchString));
-                var searchCustomerViewModel = _mapper.Map<List<CustomerViewModel>>(searchCustomer);
-                return View(searchCustomerViewModel);
+                customers = _db.Customers.Where(a => a.Username.Contains(search));
             };
+            var customerViewModel = _mapper.Map<List<CustomerViewModel>>(customers);
             return View(customerViewModel);
         }
+
 
         public IActionResult Create()
         {
@@ -81,8 +59,8 @@ namespace DemoDotNet5.Controllers
 
         public IActionResult Edit(int id)
         {
-            var tbl_customer = _db.Customers.Find(id);
-            var customerViewModel = _mapper.Map<CustomerViewModel>(tbl_customer);
+            var customer = _db.Customers.Find(id);
+            var customerViewModel = _mapper.Map<CustomerViewModel>(customer);
             return View(customerViewModel);
         }
 
@@ -102,9 +80,9 @@ namespace DemoDotNet5.Controllers
 
         public IActionResult Delete(int id)
         {
-            var tbl_customer = _db.Customers.Find(id);
-            var customer = _mapper.Map<Customer>(tbl_customer);
-            _db.Customers.Remove(customer);
+            var customer = _db.Customers.Find(id);
+            var customerViewModel = _mapper.Map<Customer>(customer);
+            _db.Customers.Remove(customerViewModel);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }

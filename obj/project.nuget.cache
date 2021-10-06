@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qR0rAWPVX38z62vKof7E2zJfccv/r92HRLTka+4fVf2VWYusaKty+PQmTEItEPDPnHQbvHjCEZVR08X6zIcmVg==",
+  "dgSpecHash": "bMhtsvTZYec+qii2p77EKTogX/9a6+QINLFooP6O63r5OdgfgUYVK3nhTIIv58RU7TNFWlE2DIQwEXPqKOG0ag==",
   "success": true,
-  "projectFilePath": "D:\\.NET5\\DemoDotNet5 - Copy\\DemoDotNet5\\DemoDotNet5.csproj",
+  "projectFilePath": "D:\\ASP.NETCORE5\\DemoDotNet5\\DemoDotNet5\\DemoDotNet5.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lenovo\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",

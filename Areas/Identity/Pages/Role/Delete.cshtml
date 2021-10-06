@@ -1,0 +1,25 @@
+﻿@page
+@model DemoDotNet5.Areas.Identity.Pages.Role.DeleteModel
+@{
+}
+
+<div class="container">
+    <h2>Delete Role</h2>
+    <form  method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label for="email">Role Name:</label>
+            <input asp-for="Input.Name" type="text" class="form-control" placeholder="Enter Category Name">
+            <span asp-validation-for="Input.Name" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a class="btn btn-secondary" asp-page="./Index">Back</a>
+    </form>
+</div>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

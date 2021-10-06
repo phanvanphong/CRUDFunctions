@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DemoDotNet5.Controllers
 {
-    [Authorize]
+    [Authorize(Policy ="Manage")]
     public class CategoryController : Controller
     {
         private readonly EShopDbContext _db;
@@ -23,35 +23,15 @@ namespace DemoDotNet5.Controllers
             _mapper = mapper;
 
         }
-        ////public IActionResult Index(string SearchString)
-        ////{
-
-        ////    var data = from c in _db.Categories
-        ////               select new CategoryViewModel
-        ////               {
-        ////                   Id = c.Id,
-        ////                   Name = c.Name,
-        ////                   Desc = c.Desc,
-        ////               };
-        ////    // Nếu chuỗi SearchString có giá trị thỳ lấy những phần tử có name chứa chuỗi Searchstring
-        ////    if (!string.IsNullOrEmpty(SearchString))
-        ////    {
-        ////        return View(data.Where(a => a.Name.Contains(SearchString)).ToList());
-        ////    }
-        ////    // Không thỳ trả về data.ToList();
-        ////    return View(data.ToList());
-        ////}
-
-        public IActionResult Index(string SearchString)
+ 
+        public IActionResult Index(string search)
         {
-            var tbl_category = _db.Categories;
-            var categoryViewModel = _mapper.Map<List<CategoryViewModel>>(tbl_category);
-            if (!string.IsNullOrEmpty(SearchString))
+            Object categories = _db.Categories;
+            if (!string.IsNullOrEmpty(search))
             {
-                var searchCategory = tbl_category.Where(a => a.Name.Contains(SearchString));
-                var searchCategoryViewModel = _mapper.Map<List<CategoryViewModel>>(searchCategory);
-                return View(searchCategoryViewModel);
+                 categories = _db.Categories.Where(a => a.Name.Contains(search));
             };
+            var categoryViewModel = _mapper.Map<List<CategoryViewModel>>(categories);
             return View(categoryViewModel);
 
         }
@@ -77,8 +57,8 @@ namespace DemoDotNet5.Controllers
 
         public IActionResult Edit(int id)
         {
-            var category_data = _db.Categories.Find(id);
-            var categoryViewModel = _mapper.Map<CategoryViewModel>(category_data);
+            var category = _db.Categories.Find(id);
+            var categoryViewModel = _mapper.Map<CategoryViewModel>(category);
             return View(categoryViewModel);
         }
 
@@ -97,9 +77,9 @@ namespace DemoDotNet5.Controllers
 
         public IActionResult Delete(int id)
         {
-            var category_data = _db.Categories.Find(id);
-            var category = _mapper.Map<Category>(category_data);
-            _db.Categories.Remove(category);
+            var category = _db.Categories.Find(id);
+            var categoryViewModel = _mapper.Map<Category>(category);
+            _db.Categories.Remove(categoryViewModel);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
